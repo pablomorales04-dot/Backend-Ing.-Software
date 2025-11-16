@@ -2,7 +2,7 @@ const asyncHandler = require('express-async-handler')
 const Tarea = require('../models/tareasModels')
 
 const getTareas = asyncHandler(async(req,res) => {
-    const tareas = await Tarea.find(user: req.user.id)
+    const tareas = await Tarea.find({user: req.user.id})
     res.status(200).json(Tareas)
 })
 
@@ -25,14 +25,13 @@ const updateTareas = asyncHandler(async(req,res) => {
         throw new Error('Tarea no encontrada')
     }
 
-    id(tarea.user.toString() !== req.user.id) {
+    if(tarea.user.toString() !== req.user.id) {
         res.status(401)
         throw new Error('Acceso no autorizado')
-    }else{
+    }
+    else{
         const tareaUpdated = await Tarea.findByIdAndUpdate(req.params.id, req.body, {new:true})
-        if(tarea) {
-            res.status(200).json(tareaUpdated)
-        }
+        res.status(200).json(tareaUpdated)
     }
 })
 
